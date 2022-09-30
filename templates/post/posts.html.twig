@@ -3,11 +3,39 @@
 
 {% block body %}
     <main class="container">
-        <section id="posts" class="row">
-            <div class="col-md-12 pt-4">
+        <section id="posts">
+            <div class="row">
                 <h2>Liste des articles</h2>
+            </div>
+
+            <div class="col-md-10 offset-1">
+                <table class="table table-hover ">
+                    <thead>
+                    <tr>
+                        <td>Image</td>
+                        <td>Title</td>
+                        <td>Date de création</td>
+                        <td>Catégorie</td>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for post in posts %}
+                        <tr>
+                            <td><img src="{{ asset('/img/posts/' ~ post.image) }}" alt="{{ post.title }}" class="img-post"></td>
+                            <td><b>{{ post.title }}</b></td>
+                            <td>{{ post.createdAt|date('d/m/Y') }}</td>
+                            <td>{{ post.category.name }}</td>
+
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
             </div>
         </section>
     </main>
 
 {% endblock %}
+
