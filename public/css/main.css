@@ -1,3 +1,7 @@
 .img-post {
     width: 50px;
 }
+
+a {
+    text-decoration: none;
+}

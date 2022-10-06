@@ -14,9 +14,9 @@ class CategoryFixture extends Fixture
     {
 
         foreach($this->categories as $category) {
-            $cat = new Category();  // creation d'une nouvelle classe
-            $cat->setName($category); // setnamle des catégorie
-            $manager->persist($cat); // on persist la $cat
+            $cat = new Category();  // creation d'une nouvelle classe basée sur l'entity
+            $cat->setName($category); // setname des catégorie
+            $manager->persist($cat); // on persist la $cat on fait un prepare
         }
 
         $manager->flush();

@@ -5,7 +5,7 @@
     <main class="container">
         <section id="posts">
             <div class="row">
-                <h2>Liste des articles</h2>
+                <h2>Liste des articles Admin[<a href="{{ path('new') }}"><i class="icofont-plus"></i></a>]</h2>
             </div>
 
             <div class="col-md-10 offset-1">
@@ -16,6 +16,7 @@
                         <td>Title</td>
                         <td>Date de création</td>
                         <td>Catégorie</td>
+                        <td>Delete</td>
 
                     </tr>
                     </thead>
@@ -28,6 +29,7 @@
                             <td><a href="{{ path('post',{ id:post.id })}} ">{{ post.title|capitalize }}</a></td>
                             <td>{{ post.createdAt|date('d/m/Y') }}</td>
                             <td>{{ post.category.name }}</td>
+                            <td><a href="{{ path('delete',{id:post.id}) }}) }}"><i class="icofont-ui-delete"></i></a></td>
 
                         </tr>
                     {% endfor %}
