@@ -17,6 +17,8 @@
                         <td>Date de création</td>
                         <td>Catégorie</td>
                         <td>Delete</td>
+                        <td>Edit</td>
+                        <td class="text-center">hide/show</td>
 
                     </tr>
                     </thead>
@@ -29,7 +31,14 @@
                             <td><a href="{{ path('post',{ id:post.id })}} ">{{ post.title|capitalize }}</a></td>
                             <td>{{ post.createdAt|date('d/m/Y') }}</td>
                             <td>{{ post.category.name }}</td>
-                            <td><a href="{{ path('delete',{id:post.id}) }}) }}"><i class="icofont-ui-delete"></i></a></td>
+                            <td><a href="{{ path('delete',{id:post.id}) }}) }}"><i class="icofont-ui-delete text-danger"></i></a></td>
+                            <td><a href="{{ path('edit', {id:post.id}) }}"><i class="icofont-edit-alt"></i></a></td>
+                            {% if post.isIsPublished %}
+                                <td class="text-center"><a href="{{ path('publish',{id:post.id}) }}"><i class="icofont-eye text-success" ></i></a></td>
+                            {% else %}
+                                <td class="text-center"><a href="{{ path('publish',{id:post.id}) }}"><i class="icofont-eye text-danger"></i></a></td>
+                            {% endif %}
+
 
                         </tr>
                     {% endfor %}

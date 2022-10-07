@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 class AdminController extends AbstractController
 {
 
@@ -47,6 +48,8 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('admin'); // vient de l'abstractcontroller pour rediriger vers l'admin
     }
 
+
+
     /**
      * @param Request $request
      * @param EntityManagerInterface $manager
@@ -55,12 +58,14 @@ class AdminController extends AbstractController
     #[Route('/admin/new', name: 'new')]
     public function new(Request $request, EntityManagerInterface $manager): Response
     {
+
         $post = new Post(); // instanciation de la classe Post
         $form = $this->createForm(PostType::class, $post);  // creation du formulaire
         $form->handleRequest($request);  // récupéeration des données du formulaire
+
         if ($form->isSubmitted() && $form->isValid()) {  // vérification si les données sont valide
             $post->setCreatedAt(new \DateTimeImmutable()) // on va setter les éléments qui ne figure pas dans le formulaire en chainage
-                ->setImage('default.png');
+            ->setImage('default.png');
             $manager->persist($post); // on persiste ( comme un prepare en sql)
             $manager->flush(); // on execute la request
             return $this->redirectToRoute('admin'); // on repasse par le controller
@@ -77,13 +82,13 @@ class AdminController extends AbstractController
      * @return Response
      */
     #[Route('/admin/editcat', name: 'editcat')]
-    public function editCat(EntityManagerInterface $manager, Request $request) : Response
+    public function editCat(EntityManagerInterface $manager, Request $request): Response
     {
         $category = new Category();
         $formcat = $this->createForm(CategoryType::class, $category); // création du form de modification de l'article
         $formcat->handleRequest($request); // récupération des donnée du form
-        if($formcat->isSubmitted() && $formcat->isValid()) {
-            $manager->persist($category);
+        if ($formcat->isSubmitted() && $formcat->isValid()) {
+            $manager->persist($category); // va être utiliser quand on va effectuer un insert
             $manager->flush();
             return $this->redirectToRoute('admin');
         }
@@ -93,6 +98,29 @@ class AdminController extends AbstractController
     }
 
 
+    #[Route('admin/edit/{id}', name: 'edit')]
+    // entitymanager va nous permettre de gerer les classe a l'intérieur de notre fonction
+        // classe request nécéssaire pour les inserts et les updates a utiliser lors de l'envoi de données en base de données
+    public function editPost(Post $post, EntityManagerInterface $manager, Request $request): Response
+    {
+        $form = $this->createForm(PostType::class, $post);
+        $form->handleRequest($request); // récupération des donnée postées
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->flush();
+            return $this->redirectToRoute('admin'); // retourne vers la route admin
+        }
+        return $this->renderForm('admin/edit.html.twig', [
+            'form' => $form
+        ]);
+    }
 
+    #[Route('admin/publish/{id}', name: 'publish')]
+    public function published(Post $post, EntityManagerInterface $manager): Response
+    {
+        $post->setIsPublished(!$post->isIsPublished());// set le contraire de ce qu'il récupère
+        $manager->flush();
+        return $this->redirectToRoute('admin');
+    }
 }
+
 

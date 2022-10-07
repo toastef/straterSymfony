@@ -33,10 +33,9 @@ class PostType extends AbstractType
             ->add('category', EntityType::class,[ //  va afficher les entitée/table de catégorie en base de donnée
                 'class'=>Category::class ,
                 'choice_label' => 'name',
+                'placeholder' => 'choose a category'
             ])
-            ->add('valider', SubmitType::class, [
-                'label'=>'Ajouter...'
-            ])
+
         ;
     }
 
